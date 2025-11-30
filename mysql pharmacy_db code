@@ -1,0 +1,67 @@
+CREATE DATABASE pharmacy_db;
+USE pharmacy_db;
+-- Medicines Table
+CREATE TABLE medicines (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    category VARCHAR(100),
+    price DECIMAL(10,2) NOT NULL,
+    stock INT NOT NULL,
+    expiry_date DATE
+);
+
+-- Customers Table
+CREATE TABLE customers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    contact VARCHAR(20),
+    address TEXT
+);
+
+-- Sales Table
+CREATE TABLE sales (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    medicine_id INT,
+    customer_id INT,
+    quantity INT NOT NULL,
+    total_price DECIMAL(10,2) NOT NULL,
+    sale_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (medicine_id) REFERENCES medicines(id) ON DELETE CASCADE,
+    FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE
+);
+
+-- Suppliers Table
+CREATE TABLE suppliers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    contact VARCHAR(20),
+    address VARCHAR(20)
+);
+
+-- Users Table (for login)
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'pharmacist') DEFAULT 'pharmacist'
+);
+-- Fetch data from sales
+SELECT * FROM users;
+SELECT * FROM sales;
+
+SELECT * FROM customers;
+SELECT * FROM medicines;
+SELECT * FROM suppliers;
+INSERT INTO users (username, password, role)
+VALUES ('sita', 'Password', 'pharmacist');
+
+DELETE FROM customers
+WHERE id = 6;
+  
+INSERT INTO sales (medicine_id, customer_id, quantity, total_price, sale_date) 
+VALUES (7, 5, 5, 100.00, NOW());
+
+ALTER TABLE suppliers AUTO_INCREMENT = 1;
+INSERT INTO suppliers (name, contact, address)
+VALUES ('Supplier Name', '123-456-7890', '123 Supplier Street');
+
